@@ -2,23 +2,51 @@ import React, {useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import AntCalendar from "./components/Calendar";
-import {RecoilRoot} from "recoil";
+import {RecoilRoot, useRecoilState} from "recoil";
 import {useQuery} from "@tanstack/react-query";
-import {useCRMEvents} from "./services/BitrixService";
+import {fetchEvents, fetchFields, fetchUsers} from "./services/BitrixService";
+import {
+    dateRange as DateRange,
+    departmentEventState,
+    publishEventState,
+    roomEventState,
+    typeContractEventState,
+    typeEventState
+} from "./store/atoms";
 
 function App() {
-    const {data, error, isLoading} = useCRMEvents();
+    const {data: users, isLoading: loadingUsers, error: errorUsers} = useQuery({
+        queryKey: ['users'],
+        queryFn: fetchUsers
+    });
+    const {data: fields, isLoading: loadingFields, error: errorFields} = useQuery({
+        queryKey: ['fields'],
+        queryFn: fetchFields
+    });
+
+
+    const [ typeEvent, setTypeEvent] = useRecoilState(typeEventState);
+    const [ departments, setDepartments] = useRecoilState(departmentEventState);
+    const [ rooms, setRooms] = useRecoilState(roomEventState);
+    const [contract, setContract] = useRecoilState(typeContractEventState)
+    const [publish, setPublish] = useRecoilState(publishEventState)
 
     useEffect(() => {
-        console.log(data)
-    }, [data])
-    if (isLoading) return <div>Loading...</div>;
-    if (error instanceof Error) return <div>An error occurred: {error.message}</div>;
+        if (!errorFields && fields) {
+            fields.forEach((element, index) => {
+                if (element.id === 167 && element.list) setTypeEvent(element.list);
+                if (element.id === 169 && element.list) setDepartments(element.list);
+                if (element.id === 170 && element.list) setRooms(element.list);
+                if (element.id === 172 && element.list) setContract(element.list);
+                if (element.id === 175 && element.list) setPublish(element.list);
+            });
+        }
+    }, [fields]);
+
 
 
     return (
         <div className="App">
-            <pre>{JSON.stringify(data, null, 2)}</pre>
             <AntCalendar/>
         </div>
     );

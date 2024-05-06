@@ -1,8 +1,16 @@
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
+import dayjs, {Dayjs} from "dayjs";
+import {IEvent, User, UserField, UserFieldAPI} from "../types";
 
-const fetchCRMEvents = async (): Promise<CRMEvent[]> => {
-    const response = await axios.get('https://intranet.gctm.ru/rest/1552/0ja3gbkg3kxex6aj/crm.deal.list', {
+const webhook: string = 'https://intranet.gctm.ru/rest/1552/0ja3gbkg3kxex6aj/';
+const events: string = 'crm.deal.list';
+const users: string = 'user.get';
+const fields: string = 'crm.deal.userfield.list';
+
+
+const fetchEvents = async (startDate: Dayjs, endDate: Dayjs): Promise<IEvent[]> => {
+    const response = await axios.get(`${webhook}${events}`, {
         params: {
             select: [
                 "ID", "TITLE", "STAGE_ID", "OPPORTUNITY", "UF_CRM_1714583071",
@@ -15,7 +23,9 @@ const fetchCRMEvents = async (): Promise<CRMEvent[]> => {
             ],
             filter: {
                 'CATEGORY_ID': 7,
-                '!=STAGE_ID': 'C7:NEW'
+                '!=STAGE_ID': 'C7:NEW',
+                '>=UF_CRM_DEAL_1712137850471': startDate.format('YYYY-MM-DD'),
+                '>=UF_CRM_DEAL_1712137877584': startDate.format('YYYY-MM-DD'),
             }
         }
     });
@@ -26,8 +36,8 @@ const fetchCRMEvents = async (): Promise<CRMEvent[]> => {
         stageId: deal.STAGE_ID,
         opportunity: deal.OPPORTUNITY,
         responsibleStaffList: deal.UF_CRM_1714583071,
-        startDate: deal.UF_CRM_DEAL_1712137850471,
-        endDate: deal.UF_CRM_DEAL_1712137877584,
+        startDate: dayjs(deal.UF_CRM_DEAL_1712137850471),
+        endDate: dayjs(deal.UF_CRM_DEAL_1712137877584),
         eventType: deal.UF_CRM_DEAL_1712137914328,
         duration: deal.UF_CRM_1714663307,
         responsibleDepartment: deal.UF_CRM_DEAL_1712138052482,
@@ -36,7 +46,7 @@ const fetchCRMEvents = async (): Promise<CRMEvent[]> => {
         contractType: deal.UF_CRM_DEAL_1712138239034,
         price: deal.OPPORTUNITY,
         requisites: deal.UF_CRM_DEAL_1712138336714,
-        publicationPlaces: deal.UF_CRM_DEAL_1712138395258,
+        ationPlaces: deal.UF_CRM_DEAL_1712138395258,
         technicalSupportRequired: deal.UF_CRM_DEAL_1712138457130 === 'Y',
         comments: deal.UF_CRM_DEAL_1712138504154,
         eventDetails: deal.UF_CRM_DEAL_1712138530562,
@@ -46,6 +56,43 @@ const fetchCRMEvents = async (): Promise<CRMEvent[]> => {
         description: deal.UF_CRM_DEAL_1712137787958,
         techSupportNeeds: deal.UF_CRM_1714654129
     }));
-};
+}
 
-export const useCRMEvents = () => useQuery({queryKey: ['crmEvents'], queryFn: fetchCRMEvents});
+const fetchFields = async (): Promise<UserField[]> => {
+    const {data} = await axios.get<{
+        result: UserFieldAPI[]
+    }>(webhook + fields);
+    return data.result.map(field => ({
+        id: parseInt(field.ID),
+        title: field.FIELD_NAME,
+        list: field.LIST?.map(item => ({
+            id: parseInt(item.ID),
+            title: item.VALUE
+        }))
+    }))
+}
+
+const fetchUsers = async (): Promise<User[]> => {
+    let allUsers: User[] = [];
+    let start = 0;
+    let hasMore = true;
+    const endpoint = webhook + users;
+
+    while (hasMore) {
+        const params = {start, filter: {user_type: 'employee', active: true}};
+        const response = await axios.get(endpoint, {params});
+        const users = response.data.result.map((user: any) => ({
+            id: parseInt(user.ID),
+            fullName: `${user.NAME} ${user.LAST_NAME}`,
+            avatarUrl: user.PERSONAL_PHOTO
+        }));
+
+        allUsers = allUsers.concat(users);
+        start += 50; // или число возвращаемых записей, если оно известно
+        hasMore = users.length === 50; // предполагаем, что если пришло меньше 50 пользователей, это последняя страница
+    }
+    return allUsers;
+}
+
+export {fetchUsers, fetchFields, fetchEvents};
+

@@ -2,9 +2,15 @@
 
 }
 
-.fullCell {
-  width: 30px;
-  height: 30px;
+.calendar {
+  border-radius: 6px;
+  overflow: hidden;
+}
 
-  background-color: red;
+.minCalendar {
+
+}
+
+.bottom {
+  display: flex;
 }

@@ -1,19 +1,25 @@
 import styles from './Calendar.module.scss';
-import {Calendar} from "antd";
-import {useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
+import isBetween from 'dayjs/plugin/isBetween';
+import Header from "./Header/Header";
+import Picker from "./Picker/Picker";
+import Grid from "./Grid/Grid";
 
-const FullCall = () => {
-    return <div className={styles.fullCell}></div>
-}
+dayjs.extend(isBetween);
+
 
 const AntCalendar = () => {
-    const [ date, setDate ] = useState<Dayjs>(dayjs('2024-04-01'));
-    return <Calendar
-        // dateCellRender={FullCall}
-        value={date}
-        onSelect={(date) => {setDate(date)}}
-    />
+
+    return <div className={styles.root}>
+        <div className={styles.calendar}>
+            <Header/>
+            <div className={styles.bottom}>
+                <Picker/>
+                <Grid/>
+            </div>
+        </div>
+
+    </div>
 };
 
 export default AntCalendar;
