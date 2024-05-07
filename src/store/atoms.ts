@@ -36,7 +36,7 @@ export const dateRange = atom<{from: Dayjs, to: Dayjs}>({
 
 export const calendarMin = atom<boolean>({
     key: 'calendarMin',
-    default: false,
+    default: true,
 })
 
 export const currentDate = atom<Dayjs>({

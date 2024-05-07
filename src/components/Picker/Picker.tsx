@@ -6,12 +6,15 @@ import {DateCalendar, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import 'dayjs/locale/ru';
 import dayjs from "dayjs";
-import Calendar from "../Calendar"; // импорт русской локализации
+import Calendar from "../Calendar";
+import {useEffect} from "react"; // импорт русской локализации
 
 dayjs.locale('ru'); // установка локализации dayjs
 
 export default function Picker() {
     const [now, setNow] = useRecoilState(currentDate)
+
+
 
     const active = useRecoilValue(calendarMin);
     return <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ru'}>
@@ -40,6 +43,7 @@ export default function Picker() {
                                     sx={{transform: 'scale(0.9)', width: '270px'}}
                                     value={now}
                                     onChange={(value, selectionState, selectedView) => setNow(value)}
+                                    showDaysOutsideCurrentMonth fixedWeekNumber={6}
                                 />
 
                             </motion.div>
