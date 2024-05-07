@@ -33,13 +33,15 @@ const MonthView: React.FC = () => {
         firstDayNextMonth.add(index, 'day').date()
     );
 
-    const handleScroll = useCallback(throttle((deltaY: number) => {
-        if (deltaY > 1000) {
+    const handleScroll = useCallback(throttle((scrollUp: boolean) => {
+        if (scrollUp) {
+            // Скролл вверх
             setCurrentMonth(currentMonth.add(1, 'month'));
-        } else if (deltaY < 1000) {
+        } else {
+            // Скролл вниз
             setCurrentMonth(currentMonth.subtract(1, 'month'));
         }
-    }, 1500), [currentMonth]); // Задержка 500 мс
+    }, 1500), [currentMonth]); // Задержка 1500 мс
 
     useEffect(() => {
         // React to currentMonth changes
@@ -53,7 +55,7 @@ const MonthView: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: next ? 30 : -30 }}
             transition={{ duration: 0.1 }}
-            onWheel={(event) => handleScroll(event.deltaY)}
+            onWheel={(event) => handleScroll(event.deltaY < 0)}
         >
             <div className={styles.weekDay}>
                 {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((day, index) => (
