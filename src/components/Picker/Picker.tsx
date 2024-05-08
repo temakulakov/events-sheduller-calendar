@@ -13,9 +13,6 @@ dayjs.locale('ru'); // установка локализации dayjs
 
 export default function Picker() {
     const [now, setNow] = useRecoilState(currentDate)
-
-
-
     const active = useRecoilValue(calendarMin);
     return <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ru'}>
         <AnimatePresence>
@@ -23,15 +20,13 @@ export default function Picker() {
                 active &&
                 <motion.div
                     key={String(active)}
-                    initial={{width: 0}} /* Начальное положение за левой границей экрана */
-                    animate={{width: 270}} /* Конечное положение внутри экрана */
-                    exit={{width: 0}} /* Положение за левой границей экрана при скрытии */
+                    initial={{width: 0, x: -300}} /* Начальное положение за левой границей экрана */
+                    animate={{width: 270, x: 0}} /* Конечное положение внутри экрана */
+                    exit={{width: 0, x: -300}} /* Положение за левой границей экрана при скрытии */
                     transition={{duration: 0.28}} /* Длительность анимации */
                     className={styles.root}
                 >
-                    <AnimatePresence>
-                        {
-                            active && <motion.div
+                            <motion.div
                                 key={String(active)+'w'}
                                 initial={{x: -300}} /* Начальное положение за левой границей экрана */
                                 animate={{x: 0}} /* Конечное положение внутри экрана */
@@ -47,8 +42,6 @@ export default function Picker() {
                                 />
 
                             </motion.div>
-                        }
-                    </AnimatePresence>
 
                 </motion.div>
             }
