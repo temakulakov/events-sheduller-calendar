@@ -1,0 +1,35 @@
+.root {
+  padding: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.number {
+  height: 25px;
+  width: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color .3s ease-in;
+
+  &:hover {
+    background-color: #d5d5d5;
+  }
+}
+
+.current {
+  background-color: #1876D2;
+  &:hover {
+    background-color: #13589b;
+  }
+  color: white;
+}
+
+.monthStart {
+  width: fit-content;
+  padding-right: 3px;
+  padding-left: 3px;
+}

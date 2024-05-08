@@ -9,9 +9,9 @@ import {Month, WeekDay} from "../../consts";
 
 
 const Header = () => {
-    const [ menu, setMenu] = useRecoilState(calendarMin);
-    const [ currentDay, setCurrentDay ] = useRecoilState(currentDate);
-    const [ view, setView ] = useRecoilState(viewState)
+    const [menu, setMenu] = useRecoilState(calendarMin);
+    const [currentDay, setCurrentDay] = useRecoilState(currentDate);
+    const [view, setView] = useRecoilState(viewState)
 
 
     const handleToday = () => {
@@ -36,17 +36,25 @@ const Header = () => {
 
     return <div className={styles.root}>
         <div className={styles.menu}>
-            <div className={styles.arrow} onClick={() => setMenu(!menu)}><MenuOutlined style={{height: '100%', width: 'auto'}} width={70} height={50}/></div>
-            <Button variant="outlined" onClick={handleToday}> Сегодня</Button>
-            <div className={styles.arrow} onClick={() => handleNext('min')} ><LeftOutlined /></div>
-            <div className={styles.arrow} onClick={() => handleNext('pls')} ><RightOutlined /></div>
+            <div className={styles.arrow} onClick={() => setMenu(!menu)}><MenuOutlined
+                style={{height: '100%', width: 'auto'}} width={70} height={50}/></div>
+            <Button sx={{height: 'fit-content'}} variant="outlined" onClick={handleToday}> Сегодня</Button>
+            <div className={styles.arrow} onClick={() => handleNext('min')}><LeftOutlined/></div>
+            <div className={styles.arrow} onClick={() => handleNext('pls')}><RightOutlined/></div>
+            <h1>
                 {
                     view === 'day' &&
-                    <p>{currentDay.date()} {Month[currentDay.month()]} {currentDay.year()} {WeekDay[currentDay.day()]}</p>
+                    <>{currentDay.date()} {Month[currentDay.month()]} {currentDay.year()} {WeekDay[currentDay.day()]}</>
                 }
+
                 {
-                    view === 'month' && <p>{Month[currentDay.month()]} {currentDay.year()}</p>
+                    view === 'week' && <>{Month[currentDay.month()]} {currentDay.year()}</>
                 }
+
+                {
+                    view === 'month' && <>{Month[currentDay.month()]} {currentDay.year()}</>
+                }
+            </h1>
         </div>
         <div className={styles.menu}>
             <ButtonGroup variant="outlined" aria-label="Basic button group">

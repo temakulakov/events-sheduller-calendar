@@ -11,9 +11,11 @@ const CellRender = ({date}: ICellRenderProps) => {
     const moment = dayjs(date, 'D.M.YYYY');
 
     return <div className={styles.root}>
-            {
-                moment.date() === 1 ? `${moment.date()} ${Month[moment.month()]}` : moment.date()
-            }
+            <div className={`${styles.number} ${moment.format('DD.MM.YYYY') === dayjs().format('DD.MM.YYYY') ? styles.current : null} ${moment.date() === 1 ? styles.monthStart : null}`}>
+                {
+                    moment.date() === 1 ? `${moment.date()} ${Month[moment.month()]}` : moment.date()
+                }
+            </div>
     </div>
 };
 

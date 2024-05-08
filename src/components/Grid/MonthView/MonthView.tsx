@@ -44,7 +44,9 @@ const MonthView: React.FC = () => {
             console.log('Scrolling backward');
             setCurrentMonth(current => current.subtract(1, 'month'));
         }
-    }, 1000, { leading: true, trailing: false }), []);
+    }, 700, { leading: true, trailing: false }), []);
+
+
 
     useEffect(() => {
         console.log('setState changed');
