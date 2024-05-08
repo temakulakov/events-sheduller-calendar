@@ -25,7 +25,6 @@ const Header = () => {
                 break;
             case 'week':
                 action === 'min' ? setCurrentDay(currentDay.subtract(1, 'week')) : setCurrentDay(currentDay.add(1, 'week'))
-                console.log('wefwef')
                 break;
             case 'month':
                 action === 'min' ? setCurrentDay(currentDay.subtract(1, 'month')) : setCurrentDay(currentDay.add(1, 'month'))

@@ -7,9 +7,13 @@ import {Month} from "../../../consts";
 import {AnimatePresence, motion} from 'framer-motion';
 import {debounce, throttle} from "lodash";
 import CellRender from "./CellRender/CellRender";
+import {useQuery} from "@tanstack/react-query";
+import {fetchEvents} from "../../../services/BitrixService";
+import {IEvent} from "../../../types";
 
 
 const MonthView: React.FC = () => {
+    const { data: events } = useQuery({queryKey: ['events'], queryFn: () => fetchEvents(currentMonth.startOf('month'), currentMonth.endOf('month'))})
     const [currentMonth, setCurrentMonth] = useRecoilState<Dayjs>(currentDate);
     const [next, setNext] = useState<boolean>(false);
     const [timerActive, setTimerActive] = useState<boolean>(false);
@@ -38,32 +42,33 @@ const MonthView: React.FC = () => {
 
     const handleWheel = useCallback(throttle((event: React.WheelEvent) => {
         if (event.deltaY > 0) {
-            console.log('Scrolling forward');
             setCurrentMonth(current => current.add(1, 'month'));
         } else {
-            console.log('Scrolling backward');
             setCurrentMonth(current => current.subtract(1, 'month'));
         }
     }, 700, {leading: true, trailing: false}), []);
 
+    const getEventsForDay = (date: Dayjs): IEvent[] => {
+        if (events) {
 
-    useEffect(() => {
-        console.log('setState changed');
-    }, [setCurrentMonth]);
-    useEffect(() => {
-        console.log('state changed');
-        console.log(currentMonth)
-    }, [currentMonth]);
+            return events.filter(event =>
+                (event.startDate.isSame(date, 'day') || event.startDate.isBefore(date, 'day')) &&
+                (event.endDate.isSame(date, 'day') || event.endDate.isAfter(date, 'day'))
+            );
+        } else return [];
+    };
 
     return <AnimatePresence>
         <motion.div
-
             key={currentMonth.month()}
             style={{height: '100%'}}
-            initial={{opacity: 0, x: next ? -30 : 30}}
-            animate={{opacity: 1, x: 0}}
-            exit={{opacity: 0, x: next ? -30 : 30}}
-            transition={{duration: 0.1}}
+            // initial={{opacity: 0, y: !next ? -30 : 30}}
+            initial={{opacity: 0}}
+            // animate={{opacity: 1, y: 0}}
+            animate={{opacity: 1, y: 0}}
+            // exit={{opacity: 0, y: !next ? -30 : 30}}
+            exit={{opacity: 0}}
+            transition={{duration: 0.3}}
             onWheel={(event) => {
                 if (event.deltaY > 0) {
                     setNext(true);
@@ -71,7 +76,6 @@ const MonthView: React.FC = () => {
                     setNext(false);
                 }
                 handleWheel(event);
-
             }}
         >
             <div className={styles.weekDay}>
@@ -84,18 +88,27 @@ const MonthView: React.FC = () => {
             <div className={styles.root}>
                 {emptyDays.map((day, index) => (
                     <div key={`empty-${index}`} className={`${styles.cell} ${styles.unCurrent}`}>
-                        <CellRender key={index} date={`${day}.${currentMonth.month()}.${currentMonth.year()}`}/>
+                        <CellRender key={index}
+                                    date={`${day}.${currentMonth.month()}.${currentMonth.year()}`}
+                                    events={getEventsForDay(dayjs(`${day}.${currentMonth.month() + 1}.${currentMonth.year()}`, 'D.M.YYYY'))}
+                        />
                     </div>
                 ))}
                 {daysArray.map((day, index) => (
                     <div key={day} className={styles.cell}>
-                        <CellRender key={index} date={`${day}.${currentMonth.month() + 1}.${currentMonth.year()}`}/>
+                        <CellRender key={index}
+                                    date={`${day}.${currentMonth.month() + 1}.${currentMonth.year()}`}
+                                    events={getEventsForDay(dayjs(`${day}.${currentMonth.month() + 1}.${currentMonth.year()}`, 'D.M.YYYY'))}
+                        />
                     </div>
                 ))}
                 {nextDays.map((day, index) => (
                     <div key={`next-${index}`} className={`${styles.cell} ${styles.unCurrent}`}>
                         <CellRender key={index}
-                                    date={`${index + 1}.${currentMonth.month() + 2}.${currentMonth.year()}`}/>
+                                    date={`${index + 1}.${currentMonth.month() + 2}.${currentMonth.year()}`}
+                                    events={getEventsForDay(dayjs(`${day}.${currentMonth.month() + 1}.${currentMonth.year()}`, 'D.M.YYYY'))}
+
+                        />
                     </div>
                 ))}
             </div>

@@ -33,3 +33,20 @@
   padding-right: 3px;
   padding-left: 3px;
 }
+
+.containerEvents {
+  display: flex;
+  flex-direction: column;
+}
+
+.event {
+  max-width: calc(100% - 16px);
+  white-space: nowrap;
+
+  height: fit-content;
+  color: white;
+  border-radius: 5px;
+  text-align: start;
+  padding: 0 8px;
+  overflow: hidden;
+}
