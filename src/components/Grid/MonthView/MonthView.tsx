@@ -44,8 +44,7 @@ const MonthView: React.FC = () => {
             console.log('Scrolling backward');
             setCurrentMonth(current => current.subtract(1, 'month'));
         }
-    }, 700, { leading: true, trailing: false }), []);
-
+    }, 700, {leading: true, trailing: false}), []);
 
 
     useEffect(() => {
@@ -61,11 +60,19 @@ const MonthView: React.FC = () => {
 
             key={currentMonth.month()}
             style={{height: '100%'}}
-            // initial={{opacity: 0, x: next ? 30 : -30}}
-            // animate={{opacity: 1, x: 0}}
-            // exit={{opacity: 0, x: next ? 30 : -30}}
+            initial={{opacity: 0, x: next ? -30 : 30}}
+            animate={{opacity: 1, x: 0}}
+            exit={{opacity: 0, x: next ? -30 : 30}}
             transition={{duration: 0.1}}
-            onWheel={handleWheel}
+            onWheel={(event) => {
+                if (event.deltaY > 0) {
+                    setNext(true);
+                } else {
+                    setNext(false);
+                }
+                handleWheel(event);
+
+            }}
         >
             <div className={styles.weekDay}>
                 {['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map((day, index) => (
@@ -87,7 +94,8 @@ const MonthView: React.FC = () => {
                 ))}
                 {nextDays.map((day, index) => (
                     <div key={`next-${index}`} className={`${styles.cell} ${styles.unCurrent}`}>
-                        <CellRender key={index} date={`${index + 1}.${currentMonth.month() + 2}.${currentMonth.year()}`}/>
+                        <CellRender key={index}
+                                    date={`${index + 1}.${currentMonth.month() + 2}.${currentMonth.year()}`}/>
                     </div>
                 ))}
             </div>

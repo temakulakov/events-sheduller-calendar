@@ -1,5 +1,5 @@
 import styles from './Header.module.scss';
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {LeftOutlined, MenuOutlined, RightOutlined} from "@ant-design/icons";
 import {Button, ButtonGroup} from "@mui/material";
 import {useRecoilState} from "recoil";
@@ -11,7 +11,8 @@ import {Month, WeekDay} from "../../consts";
 const Header = () => {
     const [menu, setMenu] = useRecoilState(calendarMin);
     const [currentDay, setCurrentDay] = useRecoilState(currentDate);
-    const [view, setView] = useRecoilState(viewState)
+    const [view, setView] = useRecoilState(viewState);
+
 
 
     const handleToday = () => {
