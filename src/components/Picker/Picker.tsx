@@ -50,7 +50,10 @@ export default function Picker() {
                                     onChange={(value, selectionState, selectedView) => setNow(value)}
                                     showDaysOutsideCurrentMonth fixedWeekNumber={6}
                                 />
-                                <Filters/>
+                                {
+                                    view !== 'day' && <Filters/>
+                                }
+
 
                             </motion.div>
 

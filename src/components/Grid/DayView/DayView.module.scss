@@ -1,0 +1,84 @@
+.root {
+  width: 100%;
+  display: flex;
+}
+
+
+
+.grid {
+  width: calc(100vw - 200px);
+  overflow-x: auto; // Горизонтальный скроллинг только для .grid
+  overflow-y: hidden; // Предотвращение вертикального скроллинга
+  //background-color: #13589b;
+  white-space: nowrap; // Позволяет дочерним элементам .grid быть на одной строке
+  //background: linear-gradient(to right, #DADCE0 1px, transparent 1px) repeat-y 10px 0;
+
+
+}
+
+.panel {
+  display: flex;
+  width: 200px;
+  height: fit-content;
+  flex-direction: column;
+  margin-top: 20px;
+
+  border-right: 1px #BEBEC0 solid;
+}
+
+.timeLine {
+  display: flex;
+  height: 20px;
+  background-color: white;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  h3 {
+    margin: 0;
+  }
+}
+
+
+.row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px #DADCE0 solid;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  border-bottom: 1px #BEBEC0 solid;
+  width: 100%;
+
+}
+
+.time {
+  flex: 1;
+}
+
+.gridSection {
+  border-bottom: 1px #BEBEC0 solid;
+  background-image: repeating-linear-gradient(to right, #DADCE0, #DADCE0 1px, transparent 1px, transparent 71px);
+
+}
+
+.gridRow {
+  border-bottom: 1px #DADCE0 solid;
+  background-image: repeating-linear-gradient(to right, #DADCE0, #DADCE0 1px, transparent 1px, transparent 71px);
+
+  position: relative;
+  display: flex;
+}
+
+.eventContainer {
+  color: white;
+  border-radius: 5px;
+  height: 100%;
+  position: absolute;
+}

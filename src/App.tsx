@@ -45,8 +45,6 @@ function App() {
         }
     }, [fields]);
 
-    const {data: sections, error: errorSections, isLoading: isLoadingSections} = useListSections();
-    const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
 
     return (
         <div className="App">
