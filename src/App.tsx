@@ -13,6 +13,8 @@ import {
     typeContractEventState,
     typeEventState
 } from "./store/atoms";
+import {useListSections} from "./services/ListFilial";
+import {useListElements} from "./services/ListRooms";
 
 function App() {
     const {data: users, isLoading: loadingUsers, error: errorUsers} = useQuery({
@@ -43,7 +45,8 @@ function App() {
         }
     }, [fields]);
 
-
+    const {data: sections, error: errorSections, isLoading: isLoadingSections} = useListSections();
+    const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
 
     return (
         <div className="App">

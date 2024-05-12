@@ -52,3 +52,93 @@ export interface User {
     fullName: string;
     avatarUrl: string;
 }
+
+
+// Тип данных для ответа от API
+export interface ListElementsResponse {
+    result: ListElement[];
+    total: number;
+    time: {
+        start: number;
+        finish: number;
+        duration: number;
+        processing: number;
+        date_start: string;
+        date_finish: string;
+    };
+}
+
+// Тип данных для ответа от API
+export interface ProcessedElement {
+    id: number;
+    title: string;
+    sectionId: string;
+    timeStart: Dayjs; // значение как timeStart
+    timeFinish: Dayjs; // значение как timeFinish
+    color: string; // значение как color
+}
+
+// Тип данных для ответа от API
+export interface ProcessedListSection {
+    id: number;
+    title: string;
+}
+
+// Тип данных для ответа от API
+export interface ListSectionsResponse {
+    result: ListSection[];
+    total: number;
+    time: {
+        start: number;
+        finish: number;
+        duration: number;
+        processing: number;
+        date_start: string;
+        date_finish: string;
+    };
+}
+
+export interface ListElement {
+    ID: string;
+    IBLOCK_ID: string;
+    NAME: string;
+    IBLOCK_SECTION_ID: string;
+    CREATED_BY: string;
+    BP_PUBLISHED: string;
+    CODE: string | null;
+    PROPERTY_316: { [key: string]: string };
+    PROPERTY_317: { [key: string]: string };
+    PROPERTY_318: { [key: string]: string };
+}
+
+export interface ListSection {
+    ID: string;
+    TIMESTAMP_X: string;
+    MODIFIED_BY: string;
+    DATE_CREATE: string;
+    CREATED_BY: string;
+    IBLOCK_ID: string;
+    IBLOCK_SECTION_ID: string | null;
+    ACTIVE: string;
+    GLOBAL_ACTIVE: string;
+    SORT: string;
+    NAME: string;
+    PICTURE: string | null;
+    LEFT_MARGIN: string;
+    RIGHT_MARGIN: string;
+    DEPTH_LEVEL: string;
+    DESCRIPTION: string | null;
+    DESCRIPTION_TYPE: string;
+    SEARCHABLE_CONTENT: string;
+    CODE: string | null;
+    XML_ID: string | null;
+    TMP_ID: string | null;
+    DETAIL_PICTURE: string | null;
+    SOCNET_GROUP_ID: string | null;
+    LIST_PAGE_URL: string | null;
+    SECTION_PAGE_URL: string | null;
+    IBLOCK_TYPE_ID: string;
+    IBLOCK_CODE: string | null;
+    IBLOCK_EXTERNAL_ID: string | null;
+    EXTERNAL_ID: string | null;
+}

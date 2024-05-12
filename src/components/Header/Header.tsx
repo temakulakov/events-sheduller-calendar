@@ -37,7 +37,7 @@ const Header = () => {
     return <div className={styles.root}>
         <div className={styles.menu}>
             <div className={styles.arrow} onClick={() => setMenu(!menu)}><MenuOutlined
-                style={{height: '100%', width: 'auto'}} width={70} height={50}/></div>
+                width={70} height={50}/></div>
             <Button sx={{height: 'fit-content'}} variant="outlined" onClick={handleToday}> Сегодня</Button>
             <div className={styles.arrow} onClick={() => handleNext('min')}><LeftOutlined/></div>
             <div className={styles.arrow} onClick={() => handleNext('pls')}><RightOutlined/></div>
@@ -59,7 +59,7 @@ const Header = () => {
         <div className={styles.menu}>
             <ButtonGroup variant="outlined" aria-label="Basic button group">
                 <Button onClick={() => setView('month')}>Месяц</Button>
-                <Button onClick={() => setView('week')}>Неделя</Button>
+                <Button onClick={() => {setView('week'); setCurrentDay(dayjs())}}>Неделя</Button>
                 <Button onClick={() => setView('day')}>День</Button>
             </ButtonGroup>
         </div>

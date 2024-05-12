@@ -19,7 +19,7 @@ const fetchEvents = async (startDate: Dayjs, endDate: Dayjs): Promise<IEvent[]> 
                 "UF_CRM_DEAL_1712138182738", "UF_CRM_DEAL_1712138239034", "OPPORTUNITY",
                 "UF_CRM_DEAL_1712138336714", "UF_CRM_DEAL_1712138395258", "UF_CRM_DEAL_1712138457130",
                 "UF_CRM_DEAL_1712138504154", "UF_CRM_DEAL_1712138530562", "UF_CRM_1714648360",
-                "ASSIGNED_BY_ID", "CREATED_BY", "UF_CRM_DEAL_1712137787958", "UF_CRM_1714654129"
+                "ASSIGNED_BY_ID", "CREATED_BY", "UF_CRM_DEAL_1712137787958", "UF_CRM_1714654129", 'UF_CRM_1715507748', 'UF_CRM_1715508611'
             ],
             filter: {
                 'CATEGORY_ID': 7,
@@ -29,8 +29,7 @@ const fetchEvents = async (startDate: Dayjs, endDate: Dayjs): Promise<IEvent[]> 
             }
         }
     });
-
-    return response.data.result.map((deal: any) => ({
+    const res: IEvent[] = response.data.result.map((deal: any) => ({
         id: deal.ID,
         title: deal.TITLE,
         stageId: deal.STAGE_ID,
@@ -40,8 +39,8 @@ const fetchEvents = async (startDate: Dayjs, endDate: Dayjs): Promise<IEvent[]> 
         endDate: dayjs(deal.UF_CRM_DEAL_1712137877584),
         eventType: deal.UF_CRM_DEAL_1712137914328,
         duration: deal.UF_CRM_1714663307,
-        responsibleDepartment: deal.UF_CRM_DEAL_1712138052482,
-        usedRooms: deal.UF_CRM_DEAL_1712138132003,
+        responsibleDepartment: deal.UF_CRM_1715507748,
+        usedRooms: deal.UF_CRM_1715508611,
         seatsCount: deal.UF_CRM_DEAL_1712138182738,
         contractType: deal.UF_CRM_DEAL_1712138239034,
         price: deal.OPPORTUNITY,
@@ -56,6 +55,9 @@ const fetchEvents = async (startDate: Dayjs, endDate: Dayjs): Promise<IEvent[]> 
         description: deal.UF_CRM_DEAL_1712137787958,
         techSupportNeeds: deal.UF_CRM_1714654129
     }));
+
+
+    return res.sort((a, b) => a.startDate.unix() - b.startDate.unix());
 }
 
 const fetchFields = async (): Promise<UserField[]> => {

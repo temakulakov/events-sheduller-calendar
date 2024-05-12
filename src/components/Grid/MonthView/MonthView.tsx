@@ -10,9 +10,15 @@ import CellRender from "./CellRender/CellRender";
 import {useQuery} from "@tanstack/react-query";
 import {fetchEvents} from "../../../services/BitrixService";
 import {IEvent} from "../../../types";
+import {useListSections} from "../../../services/ListFilial";
+import {useListElements} from "../../../services/ListRooms";
 
 
 const MonthView: React.FC = () => {
+    const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
+
+
+
     const { data: events } = useQuery({queryKey: ['events'], queryFn: () => fetchEvents(currentMonth.startOf('month'), currentMonth.endOf('month'))})
     const [currentMonth, setCurrentMonth] = useRecoilState<Dayjs>(currentDate);
     const [next, setNext] = useState<boolean>(false);
@@ -50,7 +56,6 @@ const MonthView: React.FC = () => {
 
     const getEventsForDay = (date: Dayjs): IEvent[] => {
         if (events) {
-
             return events.filter(event =>
                 (event.startDate.isSame(date, 'day') || event.startDate.isBefore(date, 'day')) &&
                 (event.endDate.isSame(date, 'day') || event.endDate.isAfter(date, 'day'))
@@ -60,14 +65,8 @@ const MonthView: React.FC = () => {
 
     return <AnimatePresence>
         <motion.div
+            className={styles.container}
             key={currentMonth.month()}
-            style={{height: '100%'}}
-            // initial={{opacity: 0, y: !next ? -30 : 30}}
-            initial={{opacity: 0}}
-            // animate={{opacity: 1, y: 0}}
-            animate={{opacity: 1, y: 0}}
-            // exit={{opacity: 0, y: !next ? -30 : 30}}
-            exit={{opacity: 0}}
             transition={{duration: 0.3}}
             onWheel={(event) => {
                 if (event.deltaY > 0) {
@@ -87,29 +86,29 @@ const MonthView: React.FC = () => {
             </div>
             <div className={styles.root}>
                 {emptyDays.map((day, index) => (
-                    <div key={`empty-${index}`} className={`${styles.cell} ${styles.unCurrent}`}>
                         <CellRender key={index}
+                                    elements={elements ? elements : []}
+                                    current={false}
                                     date={`${day}.${currentMonth.month()}.${currentMonth.year()}`}
                                     events={getEventsForDay(dayjs(`${day}.${currentMonth.month() + 1}.${currentMonth.year()}`, 'D.M.YYYY'))}
                         />
-                    </div>
                 ))}
                 {daysArray.map((day, index) => (
-                    <div key={day} className={styles.cell}>
                         <CellRender key={index}
+                                    elements={elements ? elements : []}
+                                    current={true}
                                     date={`${day}.${currentMonth.month() + 1}.${currentMonth.year()}`}
                                     events={getEventsForDay(dayjs(`${day}.${currentMonth.month() + 1}.${currentMonth.year()}`, 'D.M.YYYY'))}
                         />
-                    </div>
                 ))}
                 {nextDays.map((day, index) => (
-                    <div key={`next-${index}`} className={`${styles.cell} ${styles.unCurrent}`}>
                         <CellRender key={index}
+                                    elements={elements ? elements : []}
+                                    current={false}
                                     date={`${index + 1}.${currentMonth.month() + 2}.${currentMonth.year()}`}
                                     events={getEventsForDay(dayjs(`${day}.${currentMonth.month() + 1}.${currentMonth.year()}`, 'D.M.YYYY'))}
 
                         />
-                    </div>
                 ))}
             </div>
         </motion.div>
