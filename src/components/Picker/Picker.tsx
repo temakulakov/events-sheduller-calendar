@@ -1,19 +1,28 @@
 import styles from './Picker.module.scss';
 import {AnimatePresence, motion} from 'framer-motion'
 import {useRecoilState, useRecoilValue} from "recoil";
-import {calendarMin, currentDate} from "../../store/atoms";
+import {calendarMin, currentDate, viewState} from "../../store/atoms";
 import {DateCalendar, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import 'dayjs/locale/ru';
 import dayjs from "dayjs";
 import Calendar from "../Calendar";
-import {useEffect} from "react"; // импорт русской локализации
+import {useEffect} from "react";
+import Filters from "./Filters/Filters"; // импорт русской локализации
 
 dayjs.locale('ru'); // установка локализации dayjs
 
 export default function Picker() {
     const [now, setNow] = useRecoilState(currentDate)
-    const active = useRecoilValue(calendarMin);
+    const [active, setActive] = useRecoilState(calendarMin);
+    const view = useRecoilValue(viewState);
+
+    useEffect(() => {
+        if (view === 'day') {
+            setActive(false)
+        }
+    }, [view]);
+
     return <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ru'}>
         <AnimatePresence>
             {
@@ -28,6 +37,7 @@ export default function Picker() {
                 >
                             <motion.div
                                 key={String(active)+'w'}
+                                className={styles.content}
                                 initial={{x: -300}} /* Начальное положение за левой границей экрана */
                                 animate={{x: 0}} /* Конечное положение внутри экрана */
                                 exit={{x: -300}} /* Положение за левой границей экрана при скрытии */
@@ -40,6 +50,7 @@ export default function Picker() {
                                     onChange={(value, selectionState, selectedView) => setNow(value)}
                                     showDaysOutsideCurrentMonth fixedWeekNumber={6}
                                 />
+                                <Filters/>
 
                             </motion.div>
 

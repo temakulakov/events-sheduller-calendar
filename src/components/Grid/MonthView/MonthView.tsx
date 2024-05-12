@@ -1,8 +1,8 @@
 import styles from './MonthView.module.scss';
 import {useCallback, useEffect, useState} from "react";
 import dayjs, {Dayjs} from "dayjs";
-import {useRecoilState} from "recoil";
-import {currentDate} from "../../../store/atoms";
+import {useRecoilState, useRecoilValue} from "recoil";
+import {currentDate, filtersState} from "../../../store/atoms";
 import {Month} from "../../../consts";
 import {AnimatePresence, motion} from 'framer-motion';
 import {debounce, throttle} from "lodash";
@@ -17,6 +17,7 @@ import {useListElements} from "../../../services/ListRooms";
 const MonthView: React.FC = () => {
     const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
 
+    const filters = useRecoilValue(filtersState)
 
 
     const { data: events } = useQuery({queryKey: ['events'], queryFn: () => fetchEvents(currentMonth.startOf('month'), currentMonth.endOf('month'))})
@@ -56,7 +57,7 @@ const MonthView: React.FC = () => {
 
     const getEventsForDay = (date: Dayjs): IEvent[] => {
         if (events) {
-            return events.filter(event =>
+            return events.filter(el => filters.includes(Number(el.usedRooms))).filter(event =>
                 (event.startDate.isSame(date, 'day') || event.startDate.isBefore(date, 'day')) &&
                 (event.endDate.isSame(date, 'day') || event.endDate.isAfter(date, 'day'))
             );

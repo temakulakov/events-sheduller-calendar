@@ -1,15 +1,19 @@
 import styles from './WeekView.module.scss';
 import {useQuery} from "@tanstack/react-query";
 import {fetchEvents} from "../../../services/BitrixService";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import dayjs, {Dayjs} from "dayjs";
-import {currentDate, viewState} from "../../../store/atoms";
+import {currentDate, filtersState, viewState} from "../../../store/atoms";
 import {IEvent} from "../../../types";
 import {useEffect} from "react";
+import {useListElements} from "../../../services/ListRooms";
 
 const HEIGHT = 48;
 
 const WeekView = () => {
+    const filters = useRecoilValue(filtersState)
+    const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
+
     const [currentWeek, setCurrentWeek] = useRecoilState<Dayjs>(currentDate);
     const [ view, setView ] = useRecoilState(viewState);
 
@@ -20,7 +24,7 @@ const WeekView = () => {
 
     const getEventsForDay = (date: Dayjs): IEvent[] => {
         if (events) {
-            return events.filter(event =>
+            return events.filter(el => filters.includes(Number(el.usedRooms))).filter(event =>
                 (event.startDate.isSame(date, 'day') || event.startDate.isBefore(date, 'day')) &&
                 (event.endDate.isSame(date, 'day') || event.endDate.isAfter(date, 'day'))
             );
@@ -84,11 +88,11 @@ const WeekView = () => {
 )`}}>
                             {el.date.isSame(dayjs(), 'day') && <div className={styles.redLine} style={{top: dayjs().diff(dayjs().startOf('day'), 'minute') * HEIGHT / 60}}/>}
                             {
-                                getEventsForDay(el.date).map((el, key) => {
+                                elements && getEventsForDay(el.date).map((el, key) => {
                                     return <div
                                         key={key}
                                         style={{
-                                            background: 'rgb(66, 133, 244)',
+                                            backgroundColor: elements.find(ele => ele.id === Number(el.usedRooms))?.color,
                                             top: HEIGHT * dayjs(el.startDate).diff(dayjs(el.startDate).startOf('day'), 'minute') / 60,
                                             height: HEIGHT * dayjs(el.endDate).diff(dayjs(el.startDate), 'hour'),
                                         }}

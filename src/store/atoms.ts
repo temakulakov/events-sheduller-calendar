@@ -49,3 +49,7 @@ export const viewState = atom<'day'| 'week'| 'month'>({
     default: 'month',
 })
 
+export const filtersState = atom<number[]>({
+    key: 'filtersState',
+    default: [],
+})
