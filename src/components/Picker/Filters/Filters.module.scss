@@ -13,5 +13,27 @@
 }
 
 .title {
-  font-size: 18px !important;
+  font-size: 14px !important;
+  font-weight: 500;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  padding: 5px 30px;
+  cursor: pointer;
+  transition: all .4s ease-in;
+  &:hover {
+    background-color: #F1F3F4;
+  }
+}
+
+.row {
+  display: flex;
+  padding: 1px 19px;
+  align-items: center;
+  cursor: pointer;
+  height: 28px;
+  transition: all .4s ease-in;
+  &:hover {
+    background-color: #F1F3F4;
+  }
 }

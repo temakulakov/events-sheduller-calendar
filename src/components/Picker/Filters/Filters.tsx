@@ -5,6 +5,7 @@ import { useListElements } from "../../../services/ListRooms";
 import { filtersState} from "../../../store/atoms";
 import {useRecoilState} from "recoil";
 import {Checkbox} from "@mui/material";
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 
 interface Section {
     id: number;
@@ -44,9 +45,8 @@ export default function AccordionUsage() {
         }
     }
 
-    useEffect(() => {
-        console.log(filters)
-    }, [filters]);
+
+
 
 
     return (
@@ -56,9 +56,10 @@ export default function AccordionUsage() {
                     const arr = elements.filter((el, ind) => el.sectionId === String(element.id))
                     return (
                         <div key={element.id} className={styles.section}>
-                            <p className={styles.title} onClick={() => handleSectionClick(id)}>{element.title}</p>
+                            <p className={styles.title} onClick={() => handleSectionClick(id)}>{element.title}<ArrowBackIosNewOutlinedIcon sx={{rotate: sectionStatus[id] ? '90deg' : '270deg', width: 15, marginLeft: '10px'}}/></p>
                             <div className={styles.container} style={{display: sectionStatus[id] ? 'flex' : 'none'}}>{
                                 arr.map(el => <div
+                                    className={styles.row}
                                     onClick={() => handleCheckBoxClick(el.id)}
                                     key={el.id}>
                                     <Checkbox

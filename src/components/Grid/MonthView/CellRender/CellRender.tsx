@@ -55,11 +55,6 @@ const CellRender = ({date, events, current, elements}: ICellRenderProps) => {
             <div className={styles.containerEvents}>
                 {
                     events.map((el, ind) => {
-                        console.log('elements')
-                        console.log(elements)
-                        console.log('el')
-                        console.log(el)
-                        // console.log(elements.find(ele => ele.id === Number(el.usedRooms)))
                         return showMore > (ind + 2.2) && <p key={el.id} className={styles.event}
                                                             style={{backgroundColor: elements.find(ele => ele.id === Number(el.usedRooms))?.color}}>{el.title}</p>
                     })

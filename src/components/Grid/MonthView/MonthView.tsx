@@ -13,14 +13,16 @@ import {IEvent} from "../../../types";
 import {useListSections} from "../../../services/ListFilial";
 import {useListElements} from "../../../services/ListRooms";
 
+interface Props {
+    events: IEvent[];
+}
 
-const MonthView: React.FC = () => {
+const MonthView = ({ events }: Props) => {
     const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
 
     const filters = useRecoilValue(filtersState)
 
 
-    const { data: events } = useQuery({queryKey: ['events'], queryFn: () => fetchEvents(currentMonth.startOf('month'), currentMonth.endOf('month'))})
     const [currentMonth, setCurrentMonth] = useRecoilState<Dayjs>(currentDate);
     const [next, setNext] = useState<boolean>(false);
     const [timerActive, setTimerActive] = useState<boolean>(false);

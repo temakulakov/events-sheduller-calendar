@@ -10,17 +10,18 @@ import {useListElements} from "../../../services/ListRooms";
 
 const HEIGHT = 48;
 
-const WeekView = () => {
+interface Props {
+    events: IEvent[];
+}
+
+const WeekView = ({ events }: Props) => {
     const filters = useRecoilValue(filtersState)
     const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
 
     const [currentWeek, setCurrentWeek] = useRecoilState<Dayjs>(currentDate);
     const [ view, setView ] = useRecoilState(viewState);
 
-    const {data: events} = useQuery({
-        queryKey: ['events'],
-        queryFn: () => fetchEvents(currentWeek.startOf('week'), currentWeek.endOf('week'))
-    });
+
 
     const getEventsForDay = (date: Dayjs): IEvent[] => {
         if (events) {

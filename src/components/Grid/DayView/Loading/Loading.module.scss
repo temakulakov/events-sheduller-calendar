@@ -1,0 +1,13 @@
+.root {
+  height: 30px;
+  width: 100px;
+  opacity: .6;
+
+  transition: all .3s ease-in;
+}
+
+.inner {
+  height: 100%;
+  transition: all .3s ease-in;
+
+}
