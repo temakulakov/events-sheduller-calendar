@@ -17,6 +17,7 @@ export default function Grid() {
 
     const [ duration, setDuration ] = useState<{from: Dayjs; to: Dayjs}>({from: dayjs().startOf('month'), to: dayjs().endOf('month')})
     useEffect(() => {
+        console.log("ОТРАБОТАНО")
         if (view === 'day') {
             setDuration({
                 from: now.startOf('day'),
@@ -35,14 +36,14 @@ export default function Grid() {
                 to: now.endOf('month'),
             });
         }
-    }, [view]);
+    }, [view, now]);
 
     useEffect(() => {
         setNow(dayjs())
     }, []);
     const {data: sections, error: errorSections, isLoading: isLoadingSections} = useListSections();
     const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
-    const { data: events } = useQuery({queryKey: ['events', now, view], queryFn: () => fetchEvents(duration.from, duration.to)});
+    const { data: events } = useQuery({queryKey: ['events', duration], queryFn: () => fetchEvents(duration.from, duration.to)});
 
     return <div className={styles.root}>
         {

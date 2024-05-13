@@ -10,8 +10,6 @@ const fields: string = 'crm.deal.userfield.list';
 
 
 const fetchEvents = async (startDate: Dayjs, endDate: Dayjs): Promise<IEvent[]> => {
-    console.log(startDate.format('DD-MM-YYYY'))
-    console.log(endDate.format('DD-MM-YYYY'))
     const response = await axios.get(`${webhook}${events}`, {
         params: {
             select: [
@@ -26,8 +24,8 @@ const fetchEvents = async (startDate: Dayjs, endDate: Dayjs): Promise<IEvent[]> 
             filter: {
                 'CATEGORY_ID': 7,
                 '!=STAGE_ID': 'C7:NEW',
-                '>=UF_CRM_DEAL_1712137850471': startDate.format('YYYY-MM-DD'),
-                '<=UF_CRM_DEAL_1712137877584': endDate.format('YYYY-MM-DD'),
+                '>=UF_CRM_DEAL_1712137850471': startDate.toISOString(),
+                '<=UF_CRM_DEAL_1712137877584': endDate.toISOString(),
             }
         }
     });
