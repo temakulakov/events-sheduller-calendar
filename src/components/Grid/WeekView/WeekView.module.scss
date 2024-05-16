@@ -48,15 +48,15 @@
   height: 100%;
   overflow: auto;
   scrollbar-width: thin;
-  scrollbar-color: #9D2135 red;
+  scrollbar-color: #9D2135 transparent;
+
   overflow-y: scroll;
   position: relative;
   &.custom-scrollbar::-webkit-scrollbar {
     width: 0; /* Ширина полосы прокрутки */
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #888; /* Цвет ползунка */
-    border-radius: 3px; /* Скругление углов */
+    border-radius: 5px; /* Скругление углов */
   }
 }
 
