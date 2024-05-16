@@ -58,9 +58,9 @@ const Header = () => {
         </div>
         <div className={styles.menu}>
             <ButtonGroup variant="outlined" aria-label="Basic button group">
-                <Button onClick={() => setView('month')}>Месяц</Button>
-                <Button onClick={() => {setView('week'); setCurrentDay(dayjs())}}>Неделя</Button>
-                <Button onClick={() => setView('day')}>День</Button>
+                <Button onClick={() => setView('month')} className={styles.button}>Месяц</Button>
+                <Button onClick={() => {setView('week'); setCurrentDay(dayjs())}} className={styles.button}>Неделя</Button>
+                <Button onClick={() => setView('day')} className={styles.button}>День</Button>
             </ButtonGroup>
         </div>
     </div>

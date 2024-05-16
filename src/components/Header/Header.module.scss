@@ -29,3 +29,20 @@
     background-color: #F5F5F5;
   }
 }
+
+.button {
+  border: 1px #9D2135 solid;
+  &:hover {
+    z-index: 10;
+
+    box-shadow: #9D2135 0px 0px 0px 1px;
+    border-radius: 2px !important;
+    &:first-child {
+      border-radius: 5px 2px 2px 5px !important;
+    }
+
+    &:last-child {
+      border-radius: 2px  5px  5px 2px !important;
+    }
+  }
+}

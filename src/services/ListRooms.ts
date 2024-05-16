@@ -14,7 +14,6 @@ const processListElements = (elements: ListElement[]): ProcessedElement[] => {
         const key316 = Object.keys(element.PROPERTY_316)[0]; // Получаем первый ключ PROPERTY_316
         const key317 = Object.keys(element.PROPERTY_317)[0]; // Получаем первый ключ PROPERTY_317
         const key318 = Object.keys(element.PROPERTY_318)[0]; // Получаем первый ключ PROPERTY_318
-
         return ({
             id: parseInt(element.ID),
             title: element.NAME,

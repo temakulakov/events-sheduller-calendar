@@ -29,6 +29,14 @@ export default function AccordionUsage() {
         }
     }, [sections, elements]);
 
+
+    useEffect(() => {
+        if (isLoadingSections === false) {
+            console.log(sections)
+            console.log(errorElements)
+        }
+    }, [sections, elements]);
+
     const handleSectionClick = (id: number) => {
         setSectionStatus(prevStatus => {
             const newStatus = [...prevStatus];
