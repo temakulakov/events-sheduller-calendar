@@ -34,13 +34,16 @@ const Loading: React.FC<LoadingProps> = ({ color, description, report, sectionId
     }, [report, sectionId, element.id]);
 
     return (
-        <div className={styles.root} style={{ backgroundColor: color ? color : "red" }}>
-            <div className={styles.inner} style={{ backgroundColor: color ? color : "red" }} />
-            {
-                report && report[sectionId] && report[sectionId].elements[element.id] && report[sectionId].elements[element.id].percents &&  report[sectionId].elements[element.id].percents
-            }
+        <div className={styles.root}>
+            <p>{percents && `${percents.toFixed(2)}%`}</p>
+            <div className={styles.outer} style={{backgroundColor: color ? color : "red"}}>
+            </div>
+            <div className={styles.inner}
+                 style={{backgroundColor: color ? color : "red", width: `${percents}%`}}
+            />
         </div>
-    );
+    )
+        ;
 };
 
 export default Loading;

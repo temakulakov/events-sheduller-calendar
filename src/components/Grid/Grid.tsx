@@ -43,14 +43,14 @@ export default function Grid() {
         setNow(dayjs())
     }, []);
     const {data: sections, error: errorSections, isLoading: isLoadingSections} = useListSections();
-    const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
+    const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements();
     const { data: events } = useQuery({queryKey: ['events', duration], queryFn: () => fetchEvents(duration.from, duration.to)});
 
 
 
     return <div className={styles.root}>
         {
-            events && view === 'month' && <MonthView events={events}/>
+            events && view === 'month' ? <MonthView events={events}/> : <div></div>
         }
         {
             events && view === 'week' && <WeekView events={events}/>

@@ -18,7 +18,7 @@ interface Props {
 }
 
 const MonthView = ({ events }: Props) => {
-    const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
+    const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements();
 
     const filters = useRecoilValue(filtersState)
 
@@ -65,6 +65,8 @@ const MonthView = ({ events }: Props) => {
             );
         } else return [];
     };
+
+
 
     return <AnimatePresence>
         <motion.div

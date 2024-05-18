@@ -6,18 +6,20 @@ import {useRecoilState} from "recoil";
 import {calendarMin, currentDate, viewState} from "../../store/atoms";
 import dayjs from "dayjs";
 import {Month, WeekDay} from "../../consts";
-
+import ReportModal from '../ReportModal/ReportModal'
 
 const Header = () => {
     const [menu, setMenu] = useRecoilState(calendarMin);
     const [currentDay, setCurrentDay] = useRecoilState(currentDate);
     const [view, setView] = useRecoilState(viewState);
 
+    const [ reportModal, setReportModal ] = useState<boolean>(false);
 
 
     const handleToday = () => {
         setCurrentDay(dayjs());
     }
+
     const handleNext = (action: 'min' | 'pls') => {
         switch (view) {
             case 'day':
@@ -57,12 +59,15 @@ const Header = () => {
             </h1>
         </div>
         <div className={styles.menu}>
+            <Button onClick={() => setReportModal(true)} variant={'outlined'}>Отчет</Button>
+
             <ButtonGroup variant="outlined" aria-label="Basic button group">
                 <Button onClick={() => setView('month')} className={styles.button}>Месяц</Button>
                 <Button onClick={() => {setView('week'); setCurrentDay(dayjs())}} className={styles.button}>Неделя</Button>
                 <Button onClick={() => setView('day')} className={styles.button}>День</Button>
             </ButtonGroup>
         </div>
+        <ReportModal onClose={() => setReportModal(false)} open={reportModal}/>
     </div>
 };
 

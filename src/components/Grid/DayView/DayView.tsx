@@ -84,7 +84,7 @@ const DayView = ({sections, events, elements}: Props) => {
 
     useEffect(() => {
         calculatingReport();
-    }, [dateTime]);
+    }, [dateTime, events]);
 
 
     useEffect(() => {
@@ -125,14 +125,15 @@ const DayView = ({sections, events, elements}: Props) => {
                         {
                             elements.filter(element => element.sectionId === String(section.id)).map((element, elementId) =>
                                 <AnimatePresence>
-                                    {active[sectionId] && <motion.div key={v4()}
+                                    {active[sectionId] && <motion.div key={String(active[sectionId])}
                                                                       initial={{opacity: 0, top: -10, height: 0}}
                                                                       animate={{opacity: 1, top: 0, height: HEIGHT_ROW}}
-                                                                      exit={{opacity: 0, top: -10, height: 0}}
+                                                                      exit={{opacity: 0, top: 10, height: 0}}
                                                                       className={styles.row}>
-                                        {element.title}
+                                        <span>{element.title}</span>
                                         {
-                                            // report && report[0].elements && <Loading color={element.color} description={`wfe`} report={report} sectionId={sectionId} element={element} />
+
+                                            sections && elements && <Loading color={element.color} description={`wfe`} report={report} sectionId={sectionId} element={element} />
                                         }
                                     </motion.div>}
                                 </AnimatePresence>
@@ -157,10 +158,10 @@ const DayView = ({sections, events, elements}: Props) => {
                                 <AnimatePresence>
                                     {
                                         !active[sectionId] && <motion.div
-                                            key={v4()}
+                                            key={String(active[sectionId])}
                                             initial={{opacity: 0, top: -10, height: 0, borderBottom: 'none'}}
                                             animate={{opacity: 1, top: 0, height: HEIGHT_ROW / elements.filter(element => element.sectionId === String(section.id)).length, width: WIDTH * 24, borderBottom: 'none'}}
-                                            exit={{opacity: 0, top: -10, height: 0, borderBottom: 'none'}}
+                                            exit={{opacity: 0, top: 10, height: 0, borderBottom: 'none'}}
                                             className={styles.gridRow}>
                                             {
                                                 events.filter((evenT, evenTId) => String(element.id) === evenT.usedRooms).map((evenT, evenTId) => {
@@ -184,18 +185,24 @@ const DayView = ({sections, events, elements}: Props) => {
                         elements.filter(element => element.sectionId === String(section.id)).map((element, elementId) =>
                             <AnimatePresence>
                                 {active[sectionId] && <motion.div
-                                    key={v4()}
+                                    key={String(active[sectionId])}
                                     initial={{opacity: 0, top: -10, height: 0,}}
                                     animate={{opacity: 1, top: 0, height: HEIGHT_ROW, width: WIDTH * 24}}
                                     exit={{opacity: 0, top: -10, height: 0,}}
                                     className={styles.gridRow}>
                                     {
-                                        events.filter((evenT, evenTId) => String(element.id) === evenT.usedRooms).map((evenT, evenTId) => <div style={{
-                                            left: WIDTH * evenT.startDate.diff(evenT.startDate.startOf('day'), 'minute') / 60,
-                                            backgroundColor: elements.find(ele => ele.id === Number(evenT.usedRooms))?.color
-                                        }}
-                                                                            className={styles.eventContainer}
-                                                                            key={evenT.id}>{evenT.title}</div>)
+                                        events.filter((evenT, evenTId) => String(element.id) === evenT.usedRooms).map((evenT, evenTId) => {
+                                            console.log(evenT.endDate.diff(evenT.startDate, 'minute') / 60)
+                                            return <div style={{
+                                                left: WIDTH * evenT.startDate.diff(evenT.startDate.startOf('day'), 'minute') / 60,
+                                                backgroundColor: elements.find(ele => ele.id === Number(evenT.usedRooms))?.color,
+                                                width: WIDTH * evenT.endDate.diff(evenT.startDate, 'minute') / 60,
+                                            }}
+                                                        className={styles.eventContainer}
+                                                        key={evenT.id}>
+                                                <span>{evenT.title}</span><span>{evenT.startDate.format('HH-mm')} - {evenT.endDate.format(('HH-mm'))}</span>
+                                            </div>
+                                        })
                                     }
                                 </motion.div>}
                             </AnimatePresence>)

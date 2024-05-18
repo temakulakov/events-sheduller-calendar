@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Filters.module.scss';
 import { useListSections } from "../../../services/ListFilial";
-import { useListElements } from "../../../services/ListRooms";
+import { useListElements} from "../../../services/ListRooms";
 import { filtersState} from "../../../store/atoms";
 import {useRecoilState} from "recoil";
 import {Checkbox} from "@mui/material";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import {useQuery} from "@tanstack/react-query";
+import {ProcessedElement} from "../../../types";
 
 interface Section {
     id: number;
@@ -14,7 +16,7 @@ interface Section {
 
 export default function AccordionUsage() {
     const { data: sections, error: errorSections, isLoading: isLoadingSections } = useListSections();
-    const { data: elements, error: errorElements, isLoading: isLoadingElements } = useListElements('0');
+    const { data: elements, error: errorElements, isLoading: isLoadingElements } = useListElements();
     const [sectionStatus, setSectionStatus] = useState<boolean[]>([]);
     const [ filters, setFilters] = useRecoilState(filtersState)
 
@@ -29,12 +31,15 @@ export default function AccordionUsage() {
         }
     }, [sections, elements]);
 
+    useEffect(() => {
 
+    }, []);
     useEffect(() => {
         if (isLoadingSections === false) {
             console.log(sections)
-            console.log(errorElements)
+            console.log(elements)
         }
+        console.log(elements)
     }, [sections, elements]);
 
     const handleSectionClick = (id: number) => {
@@ -52,10 +57,6 @@ export default function AccordionUsage() {
             setFilters([...filters, i]);
         }
     }
-
-
-
-
 
     return (
         <div className={styles.root}>

@@ -16,7 +16,7 @@ interface Props {
 
 const WeekView = ({ events }: Props) => {
     const filters = useRecoilValue(filtersState)
-    const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements('0');
+    const {data: elements, error: errorElements, isLoading: isLoadingElements} = useListElements();
 
     const [currentWeek, setCurrentWeek] = useRecoilState<Dayjs>(currentDate);
     const [ view, setView ] = useRecoilState(viewState);

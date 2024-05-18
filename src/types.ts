@@ -55,8 +55,8 @@ export interface User {
 
 
 // Тип данных для ответа от API
-export interface ListElementsResponse {
-    result: ListElement[];
+export interface IResponse<T> {
+    result: T;
     total: number;
     time: {
         start: number;
@@ -82,20 +82,6 @@ export interface ProcessedElement {
 export interface ProcessedListSection {
     id: number;
     title: string;
-}
-
-// Тип данных для ответа от API
-export interface ListSectionsResponse {
-    result: ListSection[];
-    total: number;
-    time: {
-        start: number;
-        finish: number;
-        duration: number;
-        processing: number;
-        date_start: string;
-        date_finish: string;
-    };
 }
 
 export interface ListElement {

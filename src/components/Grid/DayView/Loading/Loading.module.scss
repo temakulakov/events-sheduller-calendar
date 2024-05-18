@@ -1,13 +1,34 @@
 .root {
-  height: 30px;
+  position: relative;
+  height: 25px;
   width: 100px;
-  opacity: .6;
+  transform: translateX(-20px);
+  overflow: hidden;
+  border-radius: 10px;
 
+  display: flex;
+  text-align: center;
+  align-items: center;
+  p {
+    z-index: 100;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.outer {
+  position: absolute;
+
+  height: 100%;
+  opacity: .6;
+  width: 100%;
   transition: all .3s ease-in;
+  color: white;
 }
 
 .inner {
+  position: absolute;
   height: 100%;
-  transition: all .3s ease-in;
 
+  transition: all .3s ease-in;
 }

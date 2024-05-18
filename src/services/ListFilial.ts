@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import {ListSection, ListSectionsResponse, ProcessedListSection} from "../types";
+import {IResponse, ListSection, ProcessedListSection} from "../types";
 
 
 
@@ -14,7 +14,7 @@ const processListSections = (sections: ListSection[]): ProcessedListSection[] =>
 
 // Функция для получения секций списка
 const fetchListSections = async (): Promise<ProcessedListSection[]> => {
-    const { data } = await axios.get<ListSectionsResponse>('https://intranet.gctm.ru/rest/1552/0ja3gbkg3kxex6aj/lists.section.get.json?IBLOCK_TYPE_ID=lists&IBLOCK_ID=78');
+    const { data } = await axios.get<IResponse<ListSection[]>>('https://intranet.gctm.ru/rest/1552/0ja3gbkg3kxex6aj/lists.section.get.json?IBLOCK_TYPE_ID=lists&IBLOCK_ID=78');
     return processListSections(data.result);
 };
 
